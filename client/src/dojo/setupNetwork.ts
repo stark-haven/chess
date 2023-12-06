@@ -1,42 +1,61 @@
 import { defineContractComponents } from "./contractComponents";
 import { world } from "./world";
-import { number } from 'starknet';
-
-import { Providers, Query, SyncWorker} from "@dojoengine/core";
-import { Account, ec } from "starknet";
-
-
-const accountIndex = new URLSearchParams(document.location.search).get("account")??1
-console.log("Using account index ", accountIndex)
-
-
-export const KATANA_ACCOUNT_ADDRESS = import.meta.env[`VITE_KATANA_ACCOUNT_${accountIndex}_ADDRESS`]
-export const KATANA_ACCOUNT_PRIVATEKEY = import.meta.env[`VITE_KATANA_ACCOUNT_${accountIndex}_PRIVATEKEY`]
-
-export const WORLD_ADDRESS = import.meta.env.VITE_WORLD_ADDRESS
-export const EVENT_KEY = import.meta.env.VITE_EVENT_KEY
-
+import { RPCProvider } from "@dojoengine/core";
+import { Account, num } from "starknet";
+// import dev_manifest from "../../../contracts/target/dev/manifest.json";
+// import prod_manifest from "../../../contracts/target/production/manifest.json";
+import manifest from "../manifest.json";
+import * as torii from "@dojoengine/torii-client";
+import { createBurner } from "./createBurner";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 export async function setupNetwork() {
+    const {
+        VITE_PUBLIC_WORLD_ADDRESS,
+        VITE_PUBLIC_NODE_URL,
+        VITE_PUBLIC_TORII,
+        // VITE_PUBLIC_DEV,
+    } = import.meta.env;
 
-    const contractComponents = defineContractComponents(world);
+    // const manifest = VITE_PUBLIC_DEV === "true" ? dev_manifest : prod_manifest;
+    const manifest_dev: unknown = manifest;
 
-    const provider = new Providers.RPCProvider(WORLD_ADDRESS);
+    console.log("Using manifest", manifest);
 
-    const signer = new Account(provider.sequencerProvider, KATANA_ACCOUNT_ADDRESS, ec.getKeyPair(KATANA_ACCOUNT_PRIVATEKEY))
+    const provider = new RPCProvider(
+        VITE_PUBLIC_WORLD_ADDRESS,
+        manifest_dev,
+        VITE_PUBLIC_NODE_URL
+    );
 
-    const syncWorker = new SyncWorker(provider, contractComponents, EVENT_KEY);
+    const torii_client = await torii.createClient([], {
+        rpcUrl: VITE_PUBLIC_NODE_URL,
+        toriiUrl: VITE_PUBLIC_TORII,
+        worldAddress: VITE_PUBLIC_WORLD_ADDRESS,
+    });
 
+    const { account, burnerManager } = await createBurner();
+
+    // Return the setup object.
     return {
-        contractComponents,
         provider,
-        signer,
-        execute: async (system: string, call_data: number.BigNumberish[]) => provider.execute(signer, system, call_data),
-        entity: async (component: string, query: Query) => provider.entity(component, query),
-        entities: async (component: string, partition: string, length: number) => provider.entities(component, partition, length),
         world,
-        syncWorker
+        torii_client,
+        account,
+        burnerManager,
+
+        // Define contract components for the world.
+        contractComponents: defineContractComponents(world),
+
+        // Execute function.
+        execute: async (
+            signer: Account,
+            contract: string,
+            system: string,
+            call_data: num.BigNumberish[]
+        ) => {
+            return provider.execute(signer, contract, system, call_data);
+        },
     };
 }
