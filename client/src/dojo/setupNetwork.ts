@@ -11,6 +11,7 @@ import { createBurner } from "./createBurner";
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
 export async function setupNetwork() {
+    // const VITE_PUBLIC_DEV1 = true;
     const {
         VITE_PUBLIC_WORLD_ADDRESS,
         VITE_PUBLIC_NODE_URL,
