@@ -9,6 +9,7 @@ import { Layout, PlayerInfos, ChessBoard, ChessMoves } from "../components";
 
 // Types
 import { MoveType } from "../setup/moves";
+import { ChessRack } from "../components/chess/ChessRack";
 
 // Page
 function Game() {
@@ -55,8 +56,9 @@ function Game() {
           <div className="mb-8">
             <PlayerInfos color="black" address={whitesAddress} />
           </div>
-
+          <ChessRack playerColor="black" />
           <ChessBoard />
+          <ChessRack playerColor="white" />
           <div className="mt-8">
             <PlayerInfos color="white" address={whitesAddress} />
           </div>

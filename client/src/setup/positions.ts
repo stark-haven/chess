@@ -10,6 +10,77 @@ export type PiecePositionType = {
   },
 }
 
+export const piecesRack: PiecePositionType[] = [  {
+  player: 1,
+  piece: {
+    id: 0,
+    col: 0,
+  },
+  position: {
+    row: 0,
+    col: 0,
+  },
+},
+{
+  player: 1,
+  piece: {
+    id: 1,
+    col: 0,
+  },
+  position: {
+    row: 0,
+    col: 0,
+  },
+},
+{
+  player: 1,
+  piece: {
+    id: 2,
+    col: 0
+  },
+  position: {
+    row: 1,
+    col: 0,
+  },
+},
+{
+  player: 1,
+  piece: {
+    id: 3,
+    col: 0,
+  },
+  position: {
+    row: 2,
+    col: 0,
+  },
+  
+},
+{
+  player: 1,
+  piece: {
+    id: 1,
+    col: 0,
+  },
+  position: {
+    row: 3,
+    col: 0,
+  },
+},
+
+{
+  player: 1,
+  piece: {
+    id: 4,
+    col: 0,
+  },
+  position: {
+    row: 4,
+    col: 0,
+  },
+},
+
+]
+
 export const piecesPositions: PiecePositionType[] = [
   // White Pawns
   {
