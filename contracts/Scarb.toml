@@ -1,6 +1,6 @@
 [package]
 cairo-version = "2.2.0"
-name = "starkhaven_chess"
+name = "dojo_chess"
 version = "0.1.1"
 
 [cairo]
