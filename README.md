@@ -1,8 +1,6 @@
-# Dojo Web Starter: Official Guide
+# StarkHaven Chess
 
-The official Dojo Starter guide, the quickest and most streamlined way to get your Dojo Autonomous World up and running. This guide will assist you with the initial setup, from cloning the repository to deploying your world.
-
-The Dojo Starter contains the minimum required code to bootstrap your Dojo Autonomous World. This starter package is included in the `dojoup` binary. For more detailed instructions, please refer to the official Dojo Book [here](https://book.dojoengine.org/getting-started/installation.html).
+On chain Chess game built using Dojo engine on the Starknet network.
 
 ## Prerequisites
 
@@ -24,22 +22,24 @@ dojoup
 
 The command downloads the `dojoup` installation script and executes it.
 
+Also install the sozo and torii packages.
+
 ### Step 2: Clone the Repository
 
 The next step is to clone the repository to your local machine. Open your terminal and type the following command:
 
 ```console
-git clone https://github.com/coostendorp/dojo-web-starter && cd dojo-web-starter
+git clone https://github.com/stark-haven/chess && cd chess
 ```
 
-This command will create a local copy of the Dojo Web Starter repository and enter the project directory.
+This command will create a local copy of the StarkHaven Chess repository and enter the project directory.
 
-### Step 3: Build the Example World
+### Step 3: Build the Chess World
 
-With `dojoup` installed, you can now build your example world using the following command:
+With `dojoup` installed, you can now build your chess world using the following command:
 
 ```console
-make build
+sozo build
 ```
 
 This command compiles your project and prepares it for execution.
@@ -57,20 +57,20 @@ katana --allow-zero-max-fee
 Finally, deploy your world using the `sozo migrate` command. This command, deploys your world to Katana!
 
 ```console
-make deploy
+sozo migrate
 ```
 
-### Step 6: Get the React frontend ready
+### Step 6: Get the chess UI ready
 
 ```console
-make prep_web
-cd web
+cd client
 yarn
+yarn build
 ```
 
 ### Step 7: Run the frontend locally
 
 ```console
-cd web
+cd client
 yarn dev
 ```
